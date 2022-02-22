@@ -2,9 +2,10 @@ import React, {useEffect, useState}  from 'react';
 import Square from './components/square';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
-import {addSquare, changeYellow, reset} from './features/squares/squaresSlice';
+import {changeYellow, reset} from './features/squares/squaresSlice';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
+import { statusColor } from './constants';
 
 
 function App() {
@@ -15,8 +16,7 @@ function App() {
 
 
   useEffect(()=>{
-  
-    dispatch(changeYellow('green'))
+    dispatch(changeYellow(statusColor.green))
   }, [])
 
   function BuySquaresHandler(){
@@ -33,10 +33,10 @@ function App() {
     });
 
     promise.then(()=>{
-      dispatch(changeYellow('red'))
+      dispatch(changeYellow(statusColor.red))
     }).catch(error=>{
       alert(error);
-      dispatch(changeYellow('green'))
+      dispatch(changeYellow(statusColor.green))
     })
 
     
@@ -45,8 +45,6 @@ function App() {
   function resetHandler(){
     dispatch(reset())
   }
-
-  
 
   return (
     <div className="App">

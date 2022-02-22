@@ -1,4 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { color } from '@mui/system';
+import {createSlice } from '@reduxjs/toolkit';
+import { statusColor } from '../../constants';
 
 const initialState = {
   value: [],
@@ -17,7 +19,7 @@ export const squaresSlice = createSlice({
       },
       changeYellow: (state,action)=>{
         state.value.forEach(square => {
-          if(square.status === 'yellow'){
+          if(square.status === statusColor.yellow){
            square.status = action.payload
           }
          })
@@ -27,7 +29,7 @@ export const squaresSlice = createSlice({
         for(let i =0; i < 9; i++){
           state.value.push({
             id: i,
-            status: 'green'
+            status: statusColor.green
           }
           )
         } 

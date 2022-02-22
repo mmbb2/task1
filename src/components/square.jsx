@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux'
 import { changeStatus } from '../features/squares/squaresSlice';
 import { useTimer } from 'use-timer';
+import { statusColor } from '../constants';
 
 export default function Square({id, status, setIsBuyButtonActive}) {
 
@@ -15,7 +16,7 @@ export default function Square({id, status, setIsBuyButtonActive}) {
     endTime: 0,
     timerType: 'DECREMENTAL',
     onTimeOver: () => {
-      dispatch(changeStatus({id, status: 'green'}))
+      dispatch(changeStatus({id, status: statusColor.green}))
     },
   });
 
@@ -23,7 +24,7 @@ export default function Square({id, status, setIsBuyButtonActive}) {
 
   function startTimerHandler(){
     if(status === 'green'){
-      dispatch(changeStatus({id, status: 'yellow'}))
+      dispatch(changeStatus({id, status: statusColor.yellow}))
       setIsBuyButtonActive(true)
     }
     
@@ -31,18 +32,18 @@ export default function Square({id, status, setIsBuyButtonActive}) {
 
   useEffect(()=>{
     switch (status) {
-      case 'yellow':
+      case statusColor.yellow:
         start();
         break;
-      case 'green':
-      case 'red':
+      case statusColor.green:
+      case statusColor.red:
         reset();
         break;
       default:
         break;
     }
 
-    if(!squares.find(square=>square.status === 'yellow')){
+    if(!squares.find(square=>square.status === statusColor.yellow)){
       setIsBuyButtonActive(false)
     }
   }, [status])
@@ -64,7 +65,7 @@ export default function Square({id, status, setIsBuyButtonActive}) {
       }}
     >
       <Paper variant="outlined"  square onClick={startTimerHandler}>
-        <Typography>{ status === 'yellow' && `${Math.floor(time/60)}:${(time- Math.floor(time/60)*60).toString().padStart(2, '0')}`}</Typography>
+        <Typography>{ status === statusColor.yellow && `${Math.floor(time/60)}:${(time- Math.floor(time/60)*60).toString().padStart(2, '0')}`}</Typography>
       </Paper>
     </Box>
   )
