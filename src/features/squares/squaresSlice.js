@@ -5,15 +5,6 @@ const initialState = {
   status: 'idle',
 };
 
-export const buySquares = createAsyncThunk(
-  'squares/buySquares',
-  async (thunkAPI) => {
-    const res = await setTimeout(() => {
-        return Math.random() < 0.5
-    }, 1000);
-  return res
-})
-
 export const squaresSlice = createSlice({
     name: 'squares',
     initialState,
@@ -30,20 +21,21 @@ export const squaresSlice = createSlice({
            square.status = action.payload
           }
          })
-      }
-    },
-    extraReducers: {
-      [buySquares.fulfilled]: (state)=>{
-        state.value.forEach(square => {
-          if(square.status === 'yellow'){
-           square.status = 'red'
+      },
+      reset: (state)=>{
+        state.value = []
+        for(let i =0; i < 9; i++){
+          state.value.push({
+            id: i,
+            status: 'green'
           }
-         })
+          )
+        } 
       }
     }
   })
   
   // Action creators are generated for each case reducer function
-  export const { addSquare, changeStatus,changeYellow} = squaresSlice.actions
+  export const { addSquare, changeStatus,changeYellow, reset} = squaresSlice.actions
   
   export default squaresSlice.reducer

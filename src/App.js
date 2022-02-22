@@ -2,7 +2,7 @@ import React, {useEffect, useState}  from 'react';
 import Square from './components/square';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux'
-import {addSquare, changeYellow} from './features/squares/squaresSlice';
+import {addSquare, changeYellow, reset} from './features/squares/squaresSlice';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 
@@ -15,18 +15,35 @@ function App() {
 
 
   useEffect(()=>{
-    // for(let i =0; i < 9; i++){
-    //   dispatch(addSquare({
-    //     id: i,
-    //     status: 'green'
-    //   }
-    //   )) 
-    // }
+  
     dispatch(changeYellow('green'))
   }, [])
 
   function BuySquaresHandler(){
-    dispatch(changeYellow('red'))
+
+    let promise = new Promise((resolve, reject) => {
+
+      setTimeout(() => {
+        if(Math.random() > 0.5){
+          resolve()
+        } else {
+          reject('недостаточно денег')
+        }
+      }, 1000);
+    });
+
+    promise.then(()=>{
+      dispatch(changeYellow('red'))
+    }).catch(error=>{
+      alert(error);
+      dispatch(changeYellow('green'))
+    })
+
+    
+  }
+
+  function resetHandler(){
+    dispatch(reset())
   }
 
   
@@ -48,6 +65,8 @@ function App() {
       {
        isBuyButtonActive && <Button variant="contained" onClick={BuySquaresHandler}>купить</Button>
     }
+
+      <Button variant="contained" onClick={resetHandler}>обновить</Button>
     </div>
   );
 }
