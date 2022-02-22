@@ -11,7 +11,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     function loginHandler(){
-        localStorage.setItem('key', md5(email))
+        localStorage.setItem('token', md5(email))
         navigate('/', { replace: true });
     }
 

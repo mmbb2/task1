@@ -8,8 +8,8 @@ export default function NavPanel() {
     let navigate = useNavigate();
 
     function logOutHandler(){
-        localStorage.removeItem('key')
-        navigate('/', { replace: true });
+        localStorage.removeItem('token')
+        navigate('/login', { replace: true });
     }
 
   return (
@@ -20,7 +20,8 @@ export default function NavPanel() {
         <Link to='/booking'>
           <Button>booking</Button>
         </Link>
-        <Button onClick={logOutHandler}>log out</Button>
+        {!!localStorage.getItem('token') && <Button onClick={logOutHandler}>log out</Button>}
+        
     </ButtonGroup>
   )
 }
