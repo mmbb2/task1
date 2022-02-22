@@ -23,7 +23,7 @@ export default function Square({id, status, setIsBuyButtonActive}) {
   const dispatch = useDispatch()
 
   function startTimerHandler(){
-    if(status === 'green'){
+    if(status === statusColor.green){
       dispatch(changeStatus({id, status: statusColor.yellow}))
       setIsBuyButtonActive(true)
     }

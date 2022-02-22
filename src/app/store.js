@@ -20,7 +20,6 @@ const persistConfig = {
   storage,
 }
 
-
 const rootReducer = combineReducers({squares: squaresSlice})
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
