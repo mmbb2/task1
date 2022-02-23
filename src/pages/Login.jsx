@@ -4,16 +4,35 @@ import { Link } from 'react-router-dom';
 import md5 from 'md5';
 import { useNavigate } from 'react-router-dom';
 import NavPanel from '../components/NavPanel';
+import axios from 'axios';
 export default function Login() {
+
+    axios.defaults.withCredentials = true;
 
     let navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     function loginHandler(){
-        localStorage.setItem('token', md5(email))
-        navigate('/', { replace: true });
+        //localStorage.setItem('token', md5(email))
+        //navigate('/', { replace: true });
+
+         axios.post('http://localhost:3001/users/auth', {
+            email, password
+        })
+        .then((res)=>{
+            console.log(res.data)
+            localStorage.setItem('token', md5(res.data.token))
+            navigate('/', { replace: true })
+
+        })
+        .catch(err=>{alert(err.message)})
+
+        
+
     }
+
+   
 
   return (
     <Container sx={{
@@ -45,7 +64,6 @@ export default function Login() {
             onChange={(e)=>{setPassword(e.target.value)}}
         />
             <Button 
-                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
@@ -53,8 +71,9 @@ export default function Login() {
                 >
                 Sign In
             </Button>
+          
     </Box>
-        
+      
     </Container>
   )
 }
