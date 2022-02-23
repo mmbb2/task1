@@ -5,6 +5,7 @@ import md5 from 'md5';
 import { useNavigate } from 'react-router-dom';
 import NavPanel from '../components/NavPanel';
 import axios from 'axios';
+
 export default function Login() {
 
     axios.defaults.withCredentials = true;
@@ -26,7 +27,7 @@ export default function Login() {
             navigate('/', { replace: true })
 
         })
-        .catch(err=>{alert(err.message)})
+        .catch(err=>{alert(err.response.data.message)})
 
         
 

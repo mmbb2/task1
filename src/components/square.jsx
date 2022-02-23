@@ -3,24 +3,27 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux'
-import { changeStatus } from '../features/squares/squaresSlice';
+import { changeStatus, changeTimeLeft } from '../features/squares/squaresSlice';
 import { useTimer } from 'use-timer';
 import { statusColor } from '../constants';
 
-export default function Square({id, status, setIsBuyButtonActive}) {
+export default function Square({id, status, setIsBuyButtonActive, timeLeft}) {
 
-  const [timeLeft, setTimeLeft] = useState(0)
+  const dispatch = useDispatch()
   const squares = useSelector((state) => state.squares.value)
   const { time, start, reset} = useTimer({
-    initialTime: 120,
+    initialTime: timeLeft,
     endTime: 0,
     timerType: 'DECREMENTAL',
     onTimeOver: () => {
       dispatch(changeStatus({id, status: statusColor.green}))
     },
+    onTimeUpdate: (time) => {
+      dispatch(changeTimeLeft({id, timeLeft: time}));
+    },
   });
 
-  const dispatch = useDispatch()
+  
 
   function startTimerHandler(){
     if(status === statusColor.green){
@@ -48,9 +51,6 @@ export default function Square({id, status, setIsBuyButtonActive}) {
     }
   }, [status])
 
-  useEffect(()=>{
-    timeLeft > 0 && setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-  }, [timeLeft])
 
   return (
     <Box

@@ -7,14 +7,14 @@ export default function GetTokenTestButton() {
 
     let navigate = useNavigate();
 
-    async function getButton(){
-      const res = await axios.get('http://localhost:3001/users', { withCredentials: true })
-      console.log(res.data)
-      if(!res.data.token){
+     function getButton(){
+     axios.get('http://localhost:3001/users', { withCredentials: true }).then(res=>{
+        console.log(res.data.token)
+     })
+     .catch(()=>{
         localStorage.removeItem('token')
         navigate('/login', { replace: true })
-      }
-  
+     })
     }
 
   return (

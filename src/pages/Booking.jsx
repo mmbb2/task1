@@ -14,7 +14,7 @@ export default function Booking() {
     const squares = useSelector((state) => state.squares.value)
     const dispatch = useDispatch()
     useEffect(()=>{
-      dispatch(changeYellow(statusColor.green))
+    //  dispatch(changeYellow(statusColor.green))
     }, [])
   
     function BuySquaresHandler(){
@@ -58,7 +58,7 @@ export default function Booking() {
         }}
         >
           {squares.map(square=>{
-            return <Square key={square.id} id={square.id} status={square.status} setIsBuyButtonActive={setIsBuyButtonActive}/>
+            return <Square key={square.id} id={square.id} status={square.status} setIsBuyButtonActive={setIsBuyButtonActive} timeLeft={square.timeLeft}/>
           })}
         </Box>
         {
