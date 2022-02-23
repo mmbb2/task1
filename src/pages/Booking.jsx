@@ -13,10 +13,7 @@ export default function Booking() {
     const [isBuyButtonActive, setIsBuyButtonActive] = useState(false)
     const squares = useSelector((state) => state.squares.value)
     const dispatch = useDispatch()
-    useEffect(()=>{
-    //  dispatch(changeYellow(statusColor.green))
-    }, [])
-  
+    
     function BuySquaresHandler(){
   
       let promise = new Promise((resolve, reject) => {

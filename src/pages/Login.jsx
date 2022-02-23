@@ -5,6 +5,7 @@ import md5 from 'md5';
 import { useNavigate } from 'react-router-dom';
 import NavPanel from '../components/NavPanel';
 import axios from 'axios';
+import validator from 'validator';
 
 export default function Login() {
 
@@ -14,10 +15,18 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function loginHandler(){
-        //localStorage.setItem('token', md5(email))
-        //navigate('/', { replace: true });
+    
 
+    function vaidateForm(){
+        if(email && password && validator.isEmail(email)){
+            return true
+        } else{
+
+        }
+       
+    }
+
+    function loginHandler(){
          axios.post('http://localhost:3001/users/auth', {
             email, password
         })
@@ -28,12 +37,7 @@ export default function Login() {
 
         })
         .catch(err=>{alert(err.response.data.message)})
-
-        
-
     }
-
-   
 
   return (
     <Container sx={{
@@ -52,8 +56,13 @@ export default function Login() {
             label="Email Address"
             autoComplete="email"
             autoFocus
+            error={false}
+            helperText="Incorrect email."
             value={email}
-            onChange={(e)=>{setEmail(e.target.value)}}
+            type="email"
+            onChange={(e)=>{
+                setEmail(e.target.value)
+            }}
         />
         <TextField
             fullWidth
@@ -62,9 +71,11 @@ export default function Login() {
             label="Password"
             type="password"
             value={password}
+            error={false}
             onChange={(e)=>{setPassword(e.target.value)}}
         />
             <Button 
+                type='submit'
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}

@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import { Button, ButtonGroup } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 export default function NavPanel() {
 
@@ -9,6 +11,7 @@ export default function NavPanel() {
 
     function logOutHandler(){
         localStorage.removeItem('token')
+        axios.post('http://localhost:3001/users/logout')
         navigate('/login', { replace: true });
     }
 
