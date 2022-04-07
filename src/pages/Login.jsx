@@ -15,7 +15,7 @@ export default function Login() {
         alignItems: 'center'
     }}> 
     
-    <Box sx={{ maxWidth: 'md' }}> 
+    <Box sx={{ width: '300px' }}> 
         <LoginForm>
             
         </LoginForm>
