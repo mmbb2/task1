@@ -73,6 +73,7 @@ export default function LoginForm() {
                                 value={email}
                                 type="email"
                                 {...input}
+                                
                             />
                             
                             </div>
