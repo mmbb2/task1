@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 import { Button, ButtonGroup } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { useSelector, useDispatch } from 'react-redux'
+import { setToken } from '../features/squares/userSlice';
 
 export default function NavPanel() {
 
+  
     let navigate = useNavigate();
+    const dispatch = useDispatch()
 
     function logOutHandler(){
-        localStorage.removeItem('token')
+        dispatch(setToken(''))
         axios.post('http://localhost:3001/users/logout')
         navigate('/login', { replace: true });
     }
@@ -23,7 +26,7 @@ export default function NavPanel() {
         <Link to='/booking'>
           <Button>booking</Button>
         </Link>
-        {!!localStorage.getItem('token') && <Button onClick={logOutHandler}>log out</Button>}
+        <Button onClick={logOutHandler}>log out</Button>
         
     </ButtonGroup>
   )

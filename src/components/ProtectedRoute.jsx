@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
 
 
 export default function ProtectedRoute({component}) {
@@ -9,11 +10,14 @@ export default function ProtectedRoute({component}) {
     //     return !!localStorage.getItem('token')
     // }
 
+    const token = useSelector((state) => state.user.token)
+
     function isAuth(){
-      return !!localStorage.getItem('token')
+      console.log(token)
+      return !!token
     }
 
   return (
-    isAuth() === true ? component : <Navigate to="/login" replace />
+    !!token ? component : <Navigate to="/login" replace />
   )
 }

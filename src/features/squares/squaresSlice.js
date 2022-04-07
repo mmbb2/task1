@@ -4,7 +4,6 @@ import { v4 as uuid4 } from 'uuid';
 
 const initialState = {
   value: [],
-  status: 'idle',
 };
 
 export const squaresSlice = createSlice({
