@@ -36,13 +36,12 @@ export default function LoginForm() {
 
     function onSubmit(e){
         const {email, password} = e
-            axios.post('http://localhost:3001/users/auth', {
+            axios.post('http://localhost:3001/users/login', {
                 email, password
             })
             .then((res)=>{
 
                dispatch(setToken(res.headers.authorization))
-            //   localStorage.setItem('token', res.headers.authorization)
                 navigate('/', { replace: true })
 
             })
