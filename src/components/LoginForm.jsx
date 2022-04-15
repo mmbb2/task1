@@ -7,6 +7,7 @@ import { setIn } from "final-form";
 import { LoginFormSchema } from '../ValidationSchemas/LoginFormSchema';
 import { useSelector, useDispatch } from 'react-redux'
 import { setToken } from '../features/squares/userSlice';
+import { login } from '../features/squares/userSlice';
 
 export default function LoginForm() {
 
@@ -34,18 +35,12 @@ export default function LoginForm() {
         }
     };
 
-    function onSubmit(e){
+    async function onSubmit(e){
         const {email, password} = e
-            axios.post('http://localhost:3001/users/login', {
-                email, password
-            })
-            .then((res)=>{
 
-               dispatch(setToken(res.headers.authorization))
-                navigate('/', { replace: true })
-
-            })
-            .catch(err=>{alert(err.response.data.message)})
+        await dispatch(login({email, password})).unwrap();
+        
+        navigate('/', { replace: true })
     }
 
   return (
