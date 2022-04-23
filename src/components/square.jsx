@@ -7,10 +7,12 @@ import { changeStatus, changeTimeLeft } from '../features/squares/squaresSlice';
 import { useTimer } from 'use-timer';
 import { statusColor } from '../constants';
 
-export default function Square({id, status, setIsBuyButtonActive, timeLeft}) {
+export default function Square({id, status, setIsBuyButtonActive, timeLeft, handleOpenModal, ownerData}) {
 
   const dispatch = useDispatch()
   const squares = useSelector((state) => state.squares.value)
+  const token = useSelector((state) => state.user.token)
+
   const { time, start, reset} = useTimer({
     initialTime: timeLeft,
     endTime: 0,
@@ -26,9 +28,13 @@ export default function Square({id, status, setIsBuyButtonActive, timeLeft}) {
   
 
   function startTimerHandler(){
-    if(status === statusColor.green){
-      dispatch(changeStatus({id, status: statusColor.yellow}))
-      setIsBuyButtonActive(true)
+    if(token){
+      if(status === statusColor.green){
+        dispatch(changeStatus({id, status: statusColor.yellow}))
+        setIsBuyButtonActive(true)
+      }
+    } else{
+      handleOpenModal()
     }
     
   }
@@ -65,6 +71,7 @@ export default function Square({id, status, setIsBuyButtonActive, timeLeft}) {
       }}
     >
       <Paper variant="outlined"  square onClick={startTimerHandler}>
+        {ownerData?.username}
         <Typography>{ status === statusColor.yellow && `${Math.floor(time/60)}:${(time- Math.floor(time/60)*60).toString().padStart(2, '0')}`}</Typography>
       </Paper>
     </Box>

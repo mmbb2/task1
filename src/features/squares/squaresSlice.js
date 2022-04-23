@@ -1,4 +1,4 @@
-import {createSlice } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import { statusColor } from '../../constants';
 import { v4 as uuid4 } from 'uuid';
 
@@ -19,10 +19,18 @@ export const squaresSlice = createSlice({
       changeTimeLeft: (state, action) => {
         state.value.find(square => square.id === action.payload.id).timeLeft = action.payload.timeLeft
       },
-      changeYellow: (state,action)=>{
+      buyYellow: (state, action)=>{
         state.value.forEach(square => {
           if(square.status === statusColor.yellow){
-           square.status = action.payload
+           square.status = statusColor.red
+           square.ownerId = action.payload
+          }
+         })
+      },
+      rejectYellow: (state)=>{
+        state.value.forEach(square => {
+          if(square.status === statusColor.yellow){
+           square.status = statusColor.green
           }
          })
       },
@@ -41,6 +49,6 @@ export const squaresSlice = createSlice({
   })
   
   // Action creators are generated for each case reducer function
-  export const { addSquare, changeStatus,changeYellow, reset, changeTimeLeft} = squaresSlice.actions
+  export const { addSquare, changeStatus,buyYellow, rejectYellow, reset, changeTimeLeft} = squaresSlice.actions
   
   export default squaresSlice.reducer

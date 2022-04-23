@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import { Container, TextField, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
-
 import NavPanel from '../components/NavPanel';
+
 
 export default function Login() {
 
@@ -14,7 +14,7 @@ export default function Login() {
         flexDirection: 'column',
         alignItems: 'center'
     }}> 
-    
+    <NavPanel/>
     <Box sx={{ width: '300px' }}> 
         <LoginForm>
             

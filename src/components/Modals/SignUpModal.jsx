@@ -1,23 +1,15 @@
 import React, {useState} from 'react'
+import { Typography, Button, Modal, Box,TextField} from '@mui/material'
 import { Form, Field } from 'react-final-form'
-import {TextField, Button } from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { setIn } from "final-form";
-import { LoginFormSchema } from '../ValidationSchemas/LoginFormSchema';
-import { useSelector, useDispatch } from 'react-redux'
-import { login } from '../features/squares/userSlice';
+import { SignUpFormSchema } from '../../ValidationSchemas/SignUpFormSchema';
+import AuthService from '../../services/AuthService';
+import { FORM_ERROR } from 'final-form';
+import { ModalStyles } from './modalStyles';
 
-export default function LoginForm() {
+export default function SignUpModal({isOpen, handleClose, handleResultModalOpen}) {
 
-    const dispatch = useDispatch()
-
-    axios.defaults.withCredentials = true;
-
-    let navigate = useNavigate();
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
 
     const validate = (schema) => async (values) => {
         if (typeof schema === 'function') {
@@ -29,26 +21,39 @@ export default function LoginForm() {
             const errors = err.inner.reduce((formError, innerError) => {
                 return setIn(formError, innerError.path, innerError.message);
             }, {});
-    
+            
             return errors;
         }
-    };
+    }
 
     async function onSubmit(e){
-        const {email, password} = e
+        try{
+            const {email} = e
+       
+            const credentials = await AuthService.registration(email);
+            console.log(credentials)
+            handleResultModalOpen(credentials)
 
-        await dispatch(login({email, password})).unwrap();
-        
-        navigate('/', { replace: true })
+
+        }catch (err) {
+            if(err.response?.data.message){
+                return { [FORM_ERROR]: err.response.data.message }
+            }
+            
+        }
     }
 
   return (
-    <div>
-
+  <>
+    <Modal
+        open={isOpen}
+        onClose={handleClose}
+      >
+        <Box sx={ModalStyles}>
         <Form  
             onSubmit={onSubmit}
-            validate={validate(LoginFormSchema)}
-            render={({ handleSubmit }) => (
+            validate={validate(SignUpFormSchema)}
+            render={({ handleSubmit, submitError }) => (
                 <form onSubmit={handleSubmit}>
                     <Field
                         name="email"
@@ -61,8 +66,8 @@ export default function LoginForm() {
                                 label="Email Address"
                                 autoComplete="email"
                                 autoFocus
-                                error={Boolean(meta.touched && meta.error)}
-                                helperText={meta.touched && meta.error && <span>{meta.error}</span>}
+                                error={Boolean(meta.touched && (meta.error || submitError))}
+                                helperText={meta.touched && (meta.error || submitError) && <span>{(meta.error || submitError) }</span>}
                                 value={email}
                                 type="email"
                                 {...input}
@@ -72,41 +77,20 @@ export default function LoginForm() {
                             </div>
                         )}
                     />
-
-                    <Field
-                        name="password"
-                        render={({ input, meta }) => (
-                            <div>
-                            <TextField
-                                fullWidth
-                                margin="normal"
-                                required
-                                label="Password"
-                                type="password"
-                                value={password}
-                                error={Boolean(meta.touched && meta.error)}
-                                helperText={meta.touched && meta.error && <span>{meta.error}</span>}
-                                {...input}
-                            />
-                            </div>
-                        )}
-                    />
- 
                     <Button 
                         type='submit'
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         >
-                        Sign In
+                        Sign Up
                     </Button>
                 </form>
             )
         }/>
+        </Box>
+      </Modal>
 
-        
-       
-            
-    </div>
+  </>
   )
 }

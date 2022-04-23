@@ -1,5 +1,4 @@
 import {createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import AuthService from '../../services/AuthService';
 
 export const login = createAsyncThunk('user/login',
@@ -7,7 +6,6 @@ export const login = createAsyncThunk('user/login',
     try {
       
       const userData = await AuthService.login({email, password})
-
 
       return userData
       
@@ -28,6 +26,10 @@ export const userSlice = createSlice({
     reducers: {
       setToken: (state, action) => {
         state.token = action.payload
+      },
+      clearUser: (state) =>{
+        state.token = ""
+        state.user = {}
       }
     },
     extraReducers: {
@@ -40,6 +42,6 @@ export const userSlice = createSlice({
   })
   
   // Action creators are generated for each case reducer function
-  export const { setToken} = userSlice.actions
+  export const { setToken, clearUser} = userSlice.actions
   
   export default userSlice.reducer

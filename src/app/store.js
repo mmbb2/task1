@@ -14,6 +14,7 @@ import storage from 'redux-persist/lib/storage'
 import {combineReducers} from "redux";
 import squaresSlice from '../features/squares/squaresSlice';
 import userSlice from '../features/squares/userSlice';
+import adminSlice from '../features/squares/adminSlice';
 
 const persistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     squares: squaresSlice,
     user: userSlice, 
+    admin: adminSlice,
   })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -14,6 +14,15 @@ class AuthService {
       })
   };
 
+  static async registration(email) {
+    return axios.post('http://localhost:3001/users/registration', {
+                email
+      })
+      .then((res)=>{
+        return {...res.data}
+      })
+  };
+
 
 };
 

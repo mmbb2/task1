@@ -4,7 +4,7 @@ import { Button, ButtonGroup } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
-import { setToken } from '../features/squares/userSlice';
+import { setToken, clearUser } from '../features/squares/userSlice';
 
 export default function NavPanel() {
 
@@ -13,7 +13,7 @@ export default function NavPanel() {
     const dispatch = useDispatch()
 
     function logOutHandler(){
-        dispatch(setToken(''))
+        dispatch(clearUser())
         axios.post('http://localhost:3001/users/logout')
         navigate('/login', { replace: true });
     }
